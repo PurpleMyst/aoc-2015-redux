@@ -41,6 +41,13 @@ pub fn day09_benchmark(c: &mut Criterion) {
     c.bench_function("day09", |b| b.iter(|| day09::solve()));
 }
 
+pub fn day10_benchmark(c: &mut Criterion) {
+    let mut group = c.benchmark_group("day10");
+    group.sample_size(10);
+    group.bench_function("solve", |b| b.iter(|| day10::solve()));
+    group.finish()
+}
+
 pub fn alldays_benchmark(c: &mut Criterion) {
     c.bench_function("all", |b| {
         b.iter(|| {
@@ -54,6 +61,7 @@ pub fn alldays_benchmark(c: &mut Criterion) {
                 day07::solve(),
                 day08::solve(),
                 day09::solve(),
+                day10::solve(),
             )
         })
     });
@@ -79,6 +87,7 @@ criterion_group! {
         day07_benchmark,
         day08_benchmark,
         day09_benchmark,
+        day10_benchmark,
         alldays_benchmark
 }
 
