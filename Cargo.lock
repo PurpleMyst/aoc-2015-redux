@@ -276,6 +276,9 @@ version = "0.1.0"
 [[package]]
 name = "day11"
 version = "0.1.0"
+dependencies = [
+ "jetscii",
+]
 
 [[package]]
 name = "either"
@@ -312,6 +315,12 @@ name = "itoa"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc6f3ad7b9d11a0c00842ff8de1b60ee58661048eb8049ed33c73594f359d7e6"
+
+[[package]]
+name = "jetscii"
+version = "0.4.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f25cca2463cb19dbb1061eb3bd38a8b5e4ce1cc5a5a9fc0e02de486d92b9b05"
 
 [[package]]
 name = "js-sys"

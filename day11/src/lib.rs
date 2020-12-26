@@ -10,10 +10,9 @@ fn is_valid(password: &[u8; PASSWORD_LEN]) -> bool {
         return false;
     }
 
-    if password
-        .iter()
-        .copied()
-        .any(|b| matches!(b, b'i' | b'o' | b'l'))
+    if jetscii::bytes!(b'i', b'o', b'l')
+        .find(&password[..])
+        .is_some()
     {
         return false;
     }
