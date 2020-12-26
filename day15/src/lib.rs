@@ -41,7 +41,22 @@ fn recurse(
         return Some(base);
     }
 
-    if let Some((ingredient, ingredients)) = ingredients.split_first() {
+    let (ingredient, ingredients) = ingredients.split_first().unwrap();
+
+    if ingredients.is_empty() {
+        let mut base = base;
+
+        ingredient
+            .iter()
+            .zip(base.iter_mut())
+            .for_each(|(&property, dest)| *dest += teaspoons_left * property);
+
+        if filter(&base) {
+            Some(base)
+        } else {
+            None
+        }
+    } else {
         (0..=teaspoons_left)
             .filter_map(|teaspoons_used| {
                 let mut base = base;
@@ -55,12 +70,6 @@ fn recurse(
             })
             .filter(filter)
             .max_by_key(score)
-    } else {
-        if teaspoons_left == 0 {
-            Some(base)
-        } else {
-            None
-        }
     }
 }
 
