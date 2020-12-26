@@ -18,6 +18,7 @@ fn is_valid(password: &[u8; PASSWORD_LEN]) -> bool {
     }
 
     let mut indices = [0; (b'z' - b'a') as usize + 1];
+    let mut set: u32 = 0;
 
     let mut it = password.iter().copied().enumerate();
     let (_, init) = it.next().unwrap();
@@ -25,28 +26,21 @@ fn is_valid(password: &[u8; PASSWORD_LEN]) -> bool {
         if prev == cur {
             let idx_mask = (1 << (idx - 1)) as u16;
             indices[(cur - b'a') as usize] |= idx_mask;
+            set |= 1 << (cur - b'a');
         }
 
         cur
     });
 
-    for (i, &a) in indices.iter().enumerate() {
-        if a == 0 {
-            continue;
-        }
-
-        for &b in indices.iter().skip(i + 1) {
-            if b == 0 {
-                continue;
-            }
-
-            if b & !(a >> 1) != 0 {
-                return true;
-            }
-        }
+    if set.count_ones() != 2 {
+        debug_assert!(set.count_ones() == 0 || set.count_ones() == 1);
+        return false;
     }
 
-    false
+    let a = indices[set.leading_zeros() as usize - (32 - 26)];
+    let b = indices[set.trailing_zeros() as usize];
+
+    b & !(a >> 1) != 0
 }
 
 fn increment(password: &mut [u8; PASSWORD_LEN]) {
