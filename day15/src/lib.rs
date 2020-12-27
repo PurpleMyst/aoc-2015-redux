@@ -1,4 +1,3 @@
-// TODO: optimize this to do just one pass
 use std::convert::TryFrom;
 
 const PROPERTIES: usize = 5;
@@ -9,7 +8,6 @@ const INITIAL_TEASPOONS: i16 = 100;
 const CALORIE_TARGET: i16 = 500;
 
 type Ingredient = [i16; PROPERTIES];
-type Ingredients = [Ingredient; INGREDIENTS];
 
 fn parse_ingredient(line: &str) -> Ingredient {
     let mut ingredient = [0; PROPERTIES];
@@ -31,51 +29,60 @@ fn score(ingredient: &Ingredient) -> u64 {
         .unwrap_or(0)
 }
 
+fn spoonify(accumulator: Ingredient, ingredient: &Ingredient, teaspoons: i16) -> Ingredient {
+    let mut next = accumulator;
+
+    ingredient
+        .iter()
+        .zip(next.iter_mut())
+        .for_each(|(&property, dest)| *dest += teaspoons * property);
+
+    next
+}
+
 fn recurse(
     ingredients: &[Ingredient],
     teaspoons_left: i16,
-    base: Ingredient,
-    filter: &impl Fn(&Ingredient) -> bool,
-) -> Option<Ingredient> {
-    if teaspoons_left == 0 {
-        return Some(base);
-    }
+    accumulator: Ingredient,
 
+    part1: &mut u64,
+    part2: &mut u64,
+) {
     let (ingredient, ingredients) = ingredients.split_first().unwrap();
 
     if ingredients.is_empty() {
-        let mut base = base;
+        // If this is the last ingredient, we must use up all the remaining teaspoons,
+        // and we've also reached the end of the line
+        let next = spoonify(accumulator, ingredient, teaspoons_left);
+        let next_score = score(&next);
 
-        ingredient
-            .iter()
-            .zip(base.iter_mut())
-            .for_each(|(&property, dest)| *dest += teaspoons_left * property);
+        // Maximize part 1 indiscriminately
+        if *part1 < next_score {
+            *part1 = next_score;
+        }
 
-        if filter(&base) {
-            Some(base)
-        } else {
-            None
+        // Maximize part 2 indiscriminately, considering only recipes which have the given number of calories
+        if next.last() == Some(&CALORIE_TARGET) && *part2 < next_score {
+            *part2 = next_score;
         }
     } else {
-        (0..=teaspoons_left)
-            .filter_map(|teaspoons_used| {
-                let mut base = base;
-
-                ingredient
-                    .iter()
-                    .zip(base.iter_mut())
-                    .for_each(|(&property, dest)| *dest += teaspoons_used * property);
-
-                recurse(ingredients, teaspoons_left - teaspoons_used, base, filter)
-            })
-            .filter(filter)
-            .max_by_key(score)
+        // Otherwise, recurse through all possibilities
+        (0..=teaspoons_left).for_each(|teaspoons_used| {
+            let next = spoonify(accumulator, ingredient, teaspoons_used);
+            recurse(
+                ingredients,
+                teaspoons_left - teaspoons_used,
+                next,
+                part1,
+                part2,
+            )
+        })
     }
 }
 
 #[inline]
 pub fn solve() -> (u64, u64) {
-    let mut ingredients: Ingredients = [[0; PROPERTIES]; INGREDIENTS];
+    let mut ingredients = [[0; PROPERTIES]; INGREDIENTS];
 
     include_str!("input.txt")
         .lines()
@@ -83,16 +90,16 @@ pub fn solve() -> (u64, u64) {
         .zip(ingredients.iter_mut())
         .for_each(|(val, dest)| *dest = val);
 
-    (
-        score(&recurse(&ingredients, INITIAL_TEASPOONS, [0; PROPERTIES], &|_| true).unwrap()),
-        score(
-            &recurse(
-                &ingredients,
-                INITIAL_TEASPOONS,
-                [0; PROPERTIES],
-                &|ingredient| ingredient.last() == Some(&CALORIE_TARGET),
-            )
-            .unwrap(),
-        ),
-    )
+    let mut part1 = 0;
+    let mut part2 = 0;
+
+    recurse(
+        &ingredients,
+        INITIAL_TEASPOONS,
+        [0; PROPERTIES],
+        &mut part1,
+        &mut part2,
+    );
+
+    (part1, part2)
 }
