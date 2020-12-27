@@ -3,18 +3,13 @@ const TARGET: u8 = 150;
 
 #[inline]
 pub fn solve() -> (usize, usize) {
-    let mut containers = [0; CONTAINERS];
-
-    include_str!("input.txt")
-        .lines()
-        .map(|n| n.parse::<u8>().unwrap())
-        .zip(containers.iter_mut())
-        .for_each(|(val, dest)| *dest = val);
-
     let mut counts = [[0; CONTAINERS + 1]; TARGET as usize + 1];
     counts[0][0] = 1;
 
-    for &container in containers.iter() {
+    for container in include_str!("input.txt")
+        .lines()
+        .map(|n| n.parse::<u8>().unwrap())
+    {
         for remaining in (0..=TARGET - container).rev() {
             for i in (1..=CONTAINERS).rev() {
                 counts[(remaining + container) as usize][i] += counts[remaining as usize][i - 1];
