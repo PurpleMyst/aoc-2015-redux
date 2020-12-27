@@ -1,13 +1,11 @@
-use std::convert::TryFrom;
-
 const PROPERTIES: usize = 5;
 const INGREDIENTS: usize = 4;
 
-const INITIAL_TEASPOONS: i16 = 100;
+const INITIAL_TEASPOONS: i32 = 100;
 
-const CALORIE_TARGET: i16 = 500;
+const CALORIE_TARGET: i32 = 500;
 
-type Ingredient = [i16; PROPERTIES];
+type Ingredient = [i32; PROPERTIES];
 
 fn parse_ingredient(line: &str) -> Ingredient {
     let mut ingredient = [0; PROPERTIES];
@@ -19,17 +17,15 @@ fn parse_ingredient(line: &str) -> Ingredient {
     ingredient
 }
 
-fn score(ingredient: &Ingredient) -> u64 {
+fn score(ingredient: &Ingredient) -> i32 {
     ingredient
         .iter()
         .take(PROPERTIES - 1)
-        .try_fold(1, |acc, &property| {
-            Result::<u64, std::num::TryFromIntError>::Ok(acc * u64::try_from(property)?)
-        })
+        .try_fold(1, |acc, &cur| if cur < 0 { None } else { Some(acc * cur) })
         .unwrap_or(0)
 }
 
-fn spoonify(accumulator: Ingredient, ingredient: &Ingredient, teaspoons: i16) -> Ingredient {
+fn spoonify(accumulator: Ingredient, ingredient: &Ingredient, teaspoons: i32) -> Ingredient {
     let mut next = accumulator;
 
     ingredient
@@ -42,11 +38,11 @@ fn spoonify(accumulator: Ingredient, ingredient: &Ingredient, teaspoons: i16) ->
 
 fn recurse(
     ingredients: &[Ingredient],
-    teaspoons_left: i16,
+    teaspoons_left: i32,
     accumulator: Ingredient,
 
-    part1: &mut u64,
-    part2: &mut u64,
+    part1: &mut i32,
+    part2: &mut i32,
 ) {
     let (ingredient, ingredients) = ingredients.split_first().unwrap();
 
@@ -81,7 +77,7 @@ fn recurse(
 }
 
 #[inline]
-pub fn solve() -> (u64, u64) {
+pub fn solve() -> (i32, i32) {
     let mut ingredients = [[0; PROPERTIES]; INGREDIENTS];
 
     include_str!("input.txt")
