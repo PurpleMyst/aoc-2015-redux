@@ -322,7 +322,7 @@ dependencies = [
 name = "day19"
 version = "0.1.0"
 dependencies = [
- "keyed_priority_queue",
+ "bytecount",
  "rustc-hash",
 ]
 
@@ -353,7 +353,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c12499524b5585419ab2f51545a19b842263a373580a83c0eb98a0142a260a10"
 dependencies = [
- "hashbrown 0.7.2",
+ "hashbrown",
  "serde",
 ]
 
@@ -368,28 +368,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "hashbrown"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7afe4a420e3fe79967a00898cc1f4db7c8a49a9333a29f8a4bd76a253d5cd04"
-
-[[package]]
 name = "hermit-abi"
 version = "0.1.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5aca5565f760fb5b220e499d72710ed156fdb74e631659e99377d9ebfbd13ae8"
 dependencies = [
  "libc",
-]
-
-[[package]]
-name = "indexmap"
-version = "1.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fb1fa934250de4de8aef298d81c729a7d33d8c239daa3a7575e6b92bfc7313b"
-dependencies = [
- "autocfg",
- "hashbrown 0.9.1",
 ]
 
 [[package]]
@@ -420,15 +404,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf3d7383929f7c9c7c2d0fa596f325832df98c3704f2c60553080f7127a58175"
 dependencies = [
  "wasm-bindgen",
-]
-
-[[package]]
-name = "keyed_priority_queue"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79e9b8c932fb725974a057f2192cd26d4851bdc106c3d51bbe1b0946f7af8415"
-dependencies = [
- "indexmap",
 ]
 
 [[package]]
