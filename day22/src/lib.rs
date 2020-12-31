@@ -221,8 +221,7 @@ pub fn play(boss_initial_hp: u16, boss_dmg: u16, hard: bool) -> u16 {
                     let tentative_g = priority.g + SPELL_COSTS[idx];
 
                     if gs.get(&neighbor).map_or(true, |&g| tentative_g < g) {
-                        // TODO: find an heuristic
-                        let f = tentative_g;
+                        let f = tentative_g + neighbor.boss_hp;
 
                         gs.insert(neighbor, tentative_g);
                         open.push(neighbor, Priority { g: tentative_g, f });
