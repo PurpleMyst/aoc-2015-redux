@@ -7,10 +7,6 @@ fn find_groups(
     best_len: &mut u32,
     out: &mut Vec<u32>,
 ) {
-    if group.count_ones() > *best_len {
-        return;
-    }
-
     if let Some((head, rest)) = packages.split_first() {
         let head = *head as u16;
 
@@ -28,6 +24,10 @@ fn find_groups(
             }
 
             Ordering::Greater => {
+                if (group.count_ones() + 1) > *best_len {
+                    return;
+                }
+
                 find_groups(rest, remaining - head, (group << 1) | 1, best_len, out)
             }
 
