@@ -23,6 +23,7 @@ dependencies = [
  "day10",
  "day11",
  "day12",
+ "day14",
  "day15",
  "day16",
  "day17",
@@ -299,6 +300,10 @@ version = "0.1.0"
 dependencies = [
  "simd-json",
 ]
+
+[[package]]
+name = "day14"
+version = "0.1.0"
 
 [[package]]
 name = "day15"
