@@ -1,18 +1,18 @@
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 
-fn for_all_permutations(a: &mut [&'static str], mut f: impl FnMut(&[&'static str])) {
-    let mut p = (0..=a.len()).collect::<Vec<_>>();
+fn for_all_permutations(people: &mut [&'static str], mut callback: impl FnMut(&[&'static str])) {
+    let mut p = (0..=people.len()).collect::<Vec<_>>();
 
     let mut i = 1;
 
-    f(&*a);
+    callback(&*people);
 
-    while i < a.len() {
+    while i < people.len() {
         p[i] -= 1;
         let j = if i % 2 == 1 { p[i] } else { 0 };
-        a.swap(i, j);
+        people.swap(i, j);
 
-        f(&*a);
+        callback(&*people);
 
         i = 1;
         while p[i] == 0 {
@@ -21,7 +21,7 @@ fn for_all_permutations(a: &mut [&'static str], mut f: impl FnMut(&[&'static str
         }
     }
 
-    f(&*a);
+    callback(&*people);
 }
 
 #[inline]
