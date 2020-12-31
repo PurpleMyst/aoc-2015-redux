@@ -1,4 +1,3 @@
-const HLF: u8 = b'f';
 const TPL: u8 = b'l';
 const INC: u8 = b'c';
 const JMP: u8 = b'p';
@@ -22,7 +21,6 @@ fn collatz(mut n: usize) -> usize {
 
 fn interpret(a: usize, instructions: impl Iterator<Item = u8>) -> usize {
     instructions.fold(a, |a, instr| match instr {
-        HLF => a / 2,
         TPL => a * 3,
         INC => a + 1,
         _ => unreachable!(),
