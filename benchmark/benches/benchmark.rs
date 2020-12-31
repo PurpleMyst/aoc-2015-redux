@@ -115,34 +115,25 @@ pub fn day19_benchmark(c: &mut Criterion) {
     group.finish();
 }
 
-pub fn day25_benchmark(c: &mut Criterion) {
-    c.bench_function("day25", |b| b.iter(day25::solve));
+pub fn day20_benchmark(c: &mut Criterion) {
+    let mut group = c.benchmark_group("day20");
+    group.sample_size(10);
+    group.sampling_mode(criterion::SamplingMode::Flat);
+
+    group.bench_function("parsing", |b| b.iter(day20::load_input));
+
+    let input = day20::load_input();
+
+    group.bench_function("part1", |b| b.iter(|| day20::solve_part1(input)));
+    group.bench_function("part2", |b| b.iter(|| day20::solve_part2(input)));
+
+    group.bench_function("solve", |b| b.iter(day20::solve));
+
+    group.finish();
 }
 
-pub fn alldays_benchmark(c: &mut Criterion) {
-    c.bench_function("all", |b| {
-        b.iter(|| {
-            (
-                day01::solve(),
-                day02::solve(),
-                day03::solve(),
-                day04::solve(),
-                day05::solve(),
-                day06::solve(),
-                day07::solve(),
-                day08::solve(),
-                day09::solve(),
-                day10::solve(),
-                day11::solve(),
-                day12::solve(),
-                day15::solve(),
-                day16::solve(),
-                day17::solve(),
-                day18::solve(),
-                day19::solve(),
-            )
-        })
-    });
+pub fn day25_benchmark(c: &mut Criterion) {
+    c.bench_function("day25", |b| b.iter(day25::solve));
 }
 
 criterion_group! {
@@ -174,8 +165,8 @@ criterion_group! {
         day17_benchmark,
         day18_benchmark,
         day19_benchmark,
+        day20_benchmark,
         day25_benchmark,
-        alldays_benchmark
 }
 
 criterion_main!(benches);

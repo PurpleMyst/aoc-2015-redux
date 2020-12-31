@@ -29,6 +29,7 @@ dependencies = [
  "day17",
  "day18",
  "day19",
+ "day20",
  "day25",
 ]
 
@@ -331,6 +332,10 @@ dependencies = [
  "bytecount",
  "rustc-hash",
 ]
+
+[[package]]
+name = "day20"
+version = "0.1.0"
 
 [[package]]
 name = "day25"
