@@ -58,7 +58,7 @@ enum NextState {
 
 impl State {
     fn next(mut self, boss_dmg: u16, hard: bool) -> NextState {
-        if hard == true {
+        if hard {
             self.player_hp -= 1;
 
             if self.player_hp == 0 {
