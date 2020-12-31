@@ -25,6 +25,7 @@ day19 = { path = "../day19" }
 day25 = { path = "../day25" }
 day14 = { path = "../day14" }
 day20 = { path = "../day20" }
+day13 = { path = "../day13" }
 
 [dev-dependencies]
 criterion = "0.3"

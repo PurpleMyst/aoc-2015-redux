@@ -23,6 +23,7 @@ dependencies = [
  "day10",
  "day11",
  "day12",
+ "day13",
  "day14",
  "day15",
  "day16",
@@ -300,6 +301,13 @@ name = "day12"
 version = "0.1.0"
 dependencies = [
  "simd-json",
+]
+
+[[package]]
+name = "day13"
+version = "0.1.0"
+dependencies = [
+ "rustc-hash",
 ]
 
 [[package]]
