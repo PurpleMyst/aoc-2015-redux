@@ -136,6 +136,21 @@ pub fn day20_benchmark(c: &mut Criterion) {
     group.finish();
 }
 
+pub fn day21_benchmark(c: &mut Criterion) {
+    let mut group = c.benchmark_group("day21");
+
+    group.bench_function("parsing", |b| b.iter(day21::load_input));
+
+    let input = day21::load_input();
+
+    group.bench_function("part1", |b| b.iter(|| day21::solve_part1(input)));
+    group.bench_function("part2", |b| b.iter(|| day21::solve_part2(input)));
+
+    group.bench_function("solve", |b| b.iter(day21::solve));
+
+    group.finish();
+}
+
 pub fn day23_benchmark(c: &mut Criterion) {
     c.bench_function("day23", |b| b.iter(day23::solve));
 }
@@ -192,6 +207,7 @@ criterion_group! {
         day18_benchmark,
         day19_benchmark,
         day20_benchmark,
+        day21_benchmark,
         day23_benchmark,
         day24_benchmark,
         day25_benchmark,
